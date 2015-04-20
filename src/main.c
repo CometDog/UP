@@ -18,6 +18,11 @@ static void update_bg(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer); // Set bounds to full window
   GPoint center = grect_center_point(&bounds); // Find center
   
+  // Anti-aliasing
+  #ifdef PBL_COLOR
+    graphics_context_set_antialiased(ctx, true);
+  #endif
+  
   //Background color
   #ifdef PBL_COLOR
     graphics_context_set_fill_color(ctx, GColorVividCerulean); // Set the fill color.
@@ -41,6 +46,11 @@ static void update_time(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer); // Set bounds to full window
   GPoint center = grect_center_point(&bounds); // Find center
   
+  // Anti-aliasing
+  #ifdef PBL_COLOR
+    graphics_context_set_antialiased(ctx, true);
+  #endif
+  
   // Get time and structure
   time_t temp = time(NULL); 
   struct tm *t = localtime(&temp);
@@ -62,6 +72,7 @@ static void update_time(Layer *layer, GContext *ctx) {
   #ifdef PBL_COLOR
     graphics_context_set_fill_color(ctx, GColorYellow); 
     graphics_fill_circle(ctx, GPoint(secX, secY), 4);
+    graphics_context_set_antialiased(ctx, true);
   #else
     graphics_context_set_fill_color(ctx, GColorWhite); 
     graphics_fill_circle(ctx, GPoint(secX, secY), 4);
