@@ -1,0 +1,24 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "james.j.downs@gmail.com",
+    "longName": "UP",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "UP",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "3ab0c405-203d-4e31-af65-fce36bda76ad",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
