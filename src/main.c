@@ -32,12 +32,14 @@ static void update_bg(Layer *layer, GContext *ctx) {
   graphics_fill_rect(ctx, bounds, 0, GCornerNone); // Fill the screen
   
   //Background circle
-  graphics_context_set_stroke_color(ctx, GColorWhite);
-  graphics_draw_circle(ctx, center, 64);
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_circle(ctx, center, 64);
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_fill_circle(ctx, center, 61);
   
   //Center dot
   graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_fill_circle(ctx, center, 4);
+  graphics_fill_circle(ctx, center, 5);
 }
 
 // Handles updating time
@@ -61,8 +63,8 @@ static void update_time(Layer *layer, GContext *ctx) {
   int32_t hour_angle = (TRIG_MAX_ANGLE * (((t->tm_hour % 12) * 6) + (t->tm_min / 10))) / (12 * 6);
   
   //Length of hands
-  int16_t minute_hand_length = bounds.size.w;
-  int16_t hour_hand_length = 64;
+  int16_t minute_hand_length = 74;
+  int16_t hour_hand_length = 54;
   
   //X and Y of second dot.
   int secY = -64 * cos_lookup(second_angle) / TRIG_MAX_RATIO + center.y; // Get the Y position
@@ -71,11 +73,11 @@ static void update_time(Layer *layer, GContext *ctx) {
   // Second dot
   #ifdef PBL_COLOR
     graphics_context_set_fill_color(ctx, GColorYellow); 
-    graphics_fill_circle(ctx, GPoint(secX, secY), 4);
+    graphics_fill_circle(ctx, GPoint(secX, secY), 5);
     graphics_context_set_antialiased(ctx, true);
   #else
     graphics_context_set_fill_color(ctx, GColorWhite); 
-    graphics_fill_circle(ctx, GPoint(secX, secY), 4);
+    graphics_fill_circle(ctx, GPoint(secX, secY), 5);
   #endif
     
   //Minute hand
