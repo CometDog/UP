@@ -34,7 +34,11 @@ static void update_bg(Layer *layer, GContext *ctx) {
   //Background circle
   graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_fill_circle(ctx, center, 64);
-  graphics_context_set_fill_color(ctx, GColorBlack);
+  #ifdef PBL_COLOR
+    graphics_context_set_fill_color(ctx, GColorVividCerulean); // Set the fill color.
+  #else 
+    graphics_context_set_fill_color(ctx, GColorBlack); // Set the fill color.
+  #endif
   graphics_fill_circle(ctx, center, 61);
   
   //Center dot
@@ -67,8 +71,8 @@ static void update_time(Layer *layer, GContext *ctx) {
   int16_t hour_hand_length = 54;
   
   //X and Y of second dot.
-  int secY = -64 * cos_lookup(second_angle) / TRIG_MAX_RATIO + center.y; // Get the Y position
-  int secX = 64 * sin_lookup(second_angle) / TRIG_MAX_RATIO + center.x; // Get the X position
+  int secY = -63 * cos_lookup(second_angle) / TRIG_MAX_RATIO + center.y; // Get the Y position
+  int secX = 63 * sin_lookup(second_angle) / TRIG_MAX_RATIO + center.x; // Get the X position
 
   // Second dot
   #ifdef PBL_COLOR
@@ -148,17 +152,16 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_date_label));
 }
 
+// Unhide label when called
+void timer_callback(void *data) {
+  layer_set_hidden((Layer *)s_date_label, true);
+}
+
 //Control the shake gesture
 static void tap_handler(AccelAxisType axis, int32_t direction) {
-  // Hide/show date on shake
-  if (hide != true) {
-    layer_set_hidden((Layer *)s_date_label, true);
-    hide = true;
-  }
-  else {
+  // Show date then hide after X seconds
     layer_set_hidden((Layer *)s_date_label, false);
-    hide = false;
-  }
+    app_timer_register(3 * 1000, timer_callback, NULL);
 }
 
 // Unloads the layers on the main window
@@ -180,6 +183,9 @@ static void init() {
     .unload = main_window_unload
   });
   window_stack_push(s_main_window, true); // Show the main window. Animations = true.
+  
+  // Hide date immediately
+  layer_set_hidden((Layer *)s_date_label, true);
   
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler); // Update time every minute
   accel_tap_service_subscribe(tap_handler);
